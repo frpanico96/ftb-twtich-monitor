@@ -2,11 +2,11 @@
 public with sharing class TstTestDeploymentClass {
 
     @isTest
-    static voide testDemoMethod(){
+    static void testDemoMethod(){
         Test.startTest();
         TestDeploymentClass.demoMethod();
         Test.stopTest();
-        Assert.areEqual(1, 1);
+        Assert.areEqual(2, 2);
     }
 
 }
