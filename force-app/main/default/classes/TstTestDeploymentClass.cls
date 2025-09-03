@@ -2,7 +2,7 @@
 public with sharing class TstTestDeploymentClass {
 
     @isTest
-    static voide testDemoMethod(){
+    static void testDemoMethod(){
         Test.startTest();
         TestDeploymentClass.demoMethod();
         Test.stopTest();
