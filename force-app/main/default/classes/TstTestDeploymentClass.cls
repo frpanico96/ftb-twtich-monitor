@@ -6,7 +6,7 @@ public with sharing class TstTestDeploymentClass {
         Test.startTest();
         TestDeploymentClass.demoMethod();
         Test.stopTest();
-        Assert.areEqual(1, 1);
+        Assert.areEqual(2, 2);
     }
 
 }
