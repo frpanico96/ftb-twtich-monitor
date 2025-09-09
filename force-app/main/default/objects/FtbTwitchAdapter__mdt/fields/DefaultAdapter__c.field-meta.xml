@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DefaultAdapter__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates the default adapter for the application</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Default Adapter</label>
+    <type>Checkbox</type>
+</CustomField>
