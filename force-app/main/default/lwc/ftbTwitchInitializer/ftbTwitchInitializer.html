@@ -1,0 +1,8 @@
+<template>
+    <lightning-layout if:true={isLoading} multiple-rows="true" vertical-align="center">
+    <lightning-layout-item padding="around-small" class="slds-is-relative" size="12">
+      <lightning-spinner if:true={isLoading} data-text="Loading"></lightning-spinner>
+      <p class="slds-align_absolute-center slds-m-top_xx-large slds-p-top_xx-large">Loading</p>
+    </lightning-layout-item>
+    </lightning-layout>
+</template>
