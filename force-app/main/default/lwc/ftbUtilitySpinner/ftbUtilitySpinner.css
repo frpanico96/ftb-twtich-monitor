@@ -1,0 +1,4 @@
+p{
+  font-size: var(--slds-g-font-scale-3, 20px);
+  color: --slds-g-color-palette-neutral-10;
+}
