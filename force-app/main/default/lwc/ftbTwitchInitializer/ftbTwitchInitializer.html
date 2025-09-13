@@ -1,6 +1,6 @@
 <template>
   <template if:true={isLoading}>
-    <c-ftb-utility-spinner is-loading="true" loading-text="Connecting to Twitch..."></c-ftb-utility-spinner>
+    <c-ftb-utility-spinner is-loading="true" loading-text={loadingText}></c-ftb-utility-spinner>
   </template>
   <template if:false={isLoading}>
     <lightning-card show-footer="true" icon-name="custom:custom21" title="Let's Get Started">

@@ -12,7 +12,7 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
         TwitchInvokerStrategy__mdt strategyRecord = TwitchInvokerStrategy__mdt.getInstance(strategyName);
         
         if(strategyRecord?.Id == null || !strategyRecord?.Active__c){
-            throw new FtbTwitchException('Unimplemented Strategy');
+            throw new FtbTwitchException('Unimplemented Strategy', String.valueOf(FtbTwitchEnums.FtbTwitchErrors.UNIMPLEMENTED_ERROR));
         }
 
         this.strategySettings = strategyRecord;
@@ -38,13 +38,21 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
             req = this.strategy.setAdditionalHeaders(req);
             req = this.strategy.setParamsOrBody(req);
 
-            log = this.logRequest(req.getBody(), log);
+            log = this.logRequest(encryptBody(req.getBody()), log);
 
             res = this.adapter.submitRequest(req);
 
-            return this.strategy.handleResponse(res).operationOutcome;
+            log = this.logResponse(encryptBody(res.getBody()), res.getStatusCode(), log);
+
+            FtbTwitchMonitorDto.FacadeResponse outcome = this.strategy.handleResponse(res);
+
+            outcome.sobjToUpsert.add(log);
+
+            FtbTwitchDbOps.upsertSobject(outcome.sobjToUpsert);
+
+            return outcome.operationOutcome;
         } catch(Exception e){
-            throw new FtbTwitchException(e.getMessage(), this.strategySettings.DeveloperName, log);
+            return String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.ERROR);
         }
 
 
@@ -56,6 +64,16 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
             this.strategySettings.Method__c,
             reqBody,
             this.strategySettings.DeveloperName,
+            log);
+    }
+
+    public override TwitchLog__c logResponse(String resBody, Integer statusCode, TwitchLog__c log){
+        return FtbTwitchTelemetryService.logCalloutResponse(
+            this.strategySettings.Method__c,
+            this.strategySettings.Method__c,
+            resBody,
+            this.strategySettings.DeveloperName,
+            statusCode,
             log);
     }
 

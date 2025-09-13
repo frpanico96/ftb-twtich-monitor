@@ -1,21 +1,32 @@
 import { LightningElement, track} from 'lwc';
 import connectApp from '@salesforce/apex/FtbTwitchControllerInitializer.connectApp';
+import Toast from 'lightning/toast';
 
 export default class FtbTwitchInitializer extends LightningElement {
 
   @track isLoading = false;
+  @track loadingText = '';
   @track twUsername = '';
 
   async connectedCallback(){
-    console.log('@@@ Initializing App Auth...');
-    // const authOutcome = await invokeAppAuthentication().catch((error) => console.log(error));
-    // console.log('@@@ AuthOutcome >>>', authOutcome);
   }
 
   async initializeConnection(e) {
     e.preventDefault();
-    console.log('@@@ Connecting App...');
-    console.log('@@@ Username >>>', this.twUsername);
+    this.loadingText = 'Connecting to Twitch App...';
+    this.isLoading = true;
+    try{
+      const res = await invokeAppAuthentication();
+      if(res === 'ERROR'){
+        await sendErorrToast();
+        this.isLoading = false;
+        return;
+      }
+      this.loadingText = 'Finding User...';
+    }catch(e){
+      await sendErorrToast();
+      this.isLoading = false;
+    }
   }
 
   handleValueChange(e) {
@@ -27,3 +38,11 @@ export default class FtbTwitchInitializer extends LightningElement {
   const invokeAppAuthentication = async () => {
     return (await connectApp());
   }
+
+  const sendErorrToast = async () => {
+        await Toast.show({
+        label: `An Error Occurred During Authentication`,
+        variant: 'error',
+        mode: 'dismissible'
+      })
+    }

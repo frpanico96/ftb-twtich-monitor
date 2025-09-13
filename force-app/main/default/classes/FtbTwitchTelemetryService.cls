@@ -28,4 +28,13 @@ public with sharing class FtbTwitchTelemetryService {
         return log;
     }
 
+    public static TwitchLog__c logCalloutResponse(String httpMethod, String endpoint, String body, String action, Integer statusCode, TwitchLog__c log){
+        log.HttpMethod__c = httpMethod;
+        log.Endpoint__c = endpoint;
+        log.ResponseBody__c = body;
+        log.Action__c = action;
+        log.StatusCode__c = statusCode;
+        return log;
+    }
+
 }

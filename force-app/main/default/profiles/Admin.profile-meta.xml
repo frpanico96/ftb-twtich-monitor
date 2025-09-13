@@ -26,6 +26,18 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FtbTwitchControllerInitializer</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FtbTwitchDbOps</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FtbTwitchEnums</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>FtbTwitchException</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -39,6 +51,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>FtbTwitchTelemetryService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FtbTwitchUtility</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
