@@ -30,6 +30,10 @@
                 <behavior>Edit</behavior>
                 <field>Method__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>EncryptResponse__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

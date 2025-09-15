@@ -42,6 +42,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FtbTwitchGetUser</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>FtbTwitchInvokeFacade</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -99,6 +103,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>TwitchInvokerStrategy__mdt.Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>TwitchInvokerStrategy__mdt.EncryptResponse__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -163,6 +172,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>TwitchUser__c.BroadcasterType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>TwitchUser__c.Description__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -178,12 +192,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>TwitchUser__c.OfflineLogoUrl__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>TwitchUser__c.RefreshToken__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>TwitchUser__c.TwitchId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TwitchUser__c.UserType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TwitchUser__c.ViewCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <layoutAssignments>

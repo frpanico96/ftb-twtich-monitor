@@ -3,7 +3,13 @@ public with sharing class FtbTwitchControllerInitializer {
     @AuraEnabled
     public static string connectApp(){
         FtbTwitchInvokeFacade client = new FtbTwitchInvokeFacade('FtbTwitchAuthApp');
-        return client.operate();
+        return client.operate('');
+    }
+
+    @AuraEnabled
+    public static string getTwitchUser(String user){
+        FtbTwitchInvokeFacade client = new FtbTwitchInvokeFacade('FtbTwitchGetUser');
+        return client.operate(user);
     }
 
 }

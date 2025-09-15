@@ -22,9 +22,14 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
         strategy = (FtbITwitchInvokeStrategy)(Type.forName(this.strategySettings.DeveloperName)).newInstance();
     }
 
-    public String operate(){
+    public String operate(String params){
 
         TwitchLog__c log = new TwitchLog__c();
+
+
+        if(!this.strategy.doExecuteCallout(params)){
+            return String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS);
+        }
 
         try{ 
             Http h = new Http();
@@ -36,13 +41,15 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
             req.setTimeout(Integer.valueOf(this.strategySettings.Timeout__c));
     
             req = this.strategy.setAdditionalHeaders(req);
-            req = this.strategy.setParamsOrBody(req);
+            req = this.strategy.setParamsOrBody(req, params);
 
             log = this.logRequest(encryptBody(req.getBody()), log);
 
             res = this.adapter.submitRequest(req);
 
-            log = this.logResponse(encryptBody(res.getBody()), res.getStatusCode(), log);
+            String responseBody = this.strategySettings.EncryptResponse__c ? encryptBody(res.getBody()) : res.getBody();
+
+            log = this.logResponse(responseBody, res.getStatusCode(), log);
 
             FtbTwitchMonitorDto.FacadeResponse outcome = this.strategy.handleResponse(res);
 

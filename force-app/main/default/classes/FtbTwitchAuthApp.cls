@@ -7,7 +7,13 @@ public with sharing class FtbTwitchAuthApp implements FtbITwitchInvokeStrategy{
         return req;
     }
 
-    public HttpRequest setParamsOrBody(HttpRequest req){
+    public Boolean doExecuteCallout(String keyParam){
+        List<TwitchApp__c> appCredentials = FtbTwitchUtility.getTwitchApp();
+
+        return String.isBlank(appCredentials[0]?.AccessToken__c);
+    }
+
+    public HttpRequest setParamsOrBody(HttpRequest req, String params){
 
         // App auth is formatted in x-www-form-urlencoded
         List<TwitchApp__c> appCredentials = FtbTwitchUtility.getTwitchApp();

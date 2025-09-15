@@ -1,6 +1,7 @@
 public interface FtbITwitchInvokeStrategy {
 
-    HttpRequest setParamsOrBody(HttpRequest req);
+    Boolean doExecuteCallout(String keyParam);
+    HttpRequest setParamsOrBody(HttpRequest req, String params);
     HttpRequest setAdditionalHeaders(HttpRequest req);
     FtbTwitchMonitorDto.FacadeResponse handleResponse(HttpResponse res);
 }

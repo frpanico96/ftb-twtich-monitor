@@ -156,9 +156,8 @@
     <externalSharingModel>Private</externalSharingModel>
     <label>Twitch User</label>
     <nameField>
-        <displayFormat>TWU-{00000}</displayFormat>
         <label>Twitch User Name</label>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>Twitch Users</pluralLabel>
     <searchLayouts></searchLayouts>
