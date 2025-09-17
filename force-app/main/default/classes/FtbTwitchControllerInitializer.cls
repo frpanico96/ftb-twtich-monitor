@@ -12,4 +12,9 @@ public with sharing class FtbTwitchControllerInitializer {
         return client.operate(user);
     }
 
+    @AuraEnabled
+    public static string getTwitchLoginUrl(String additionalScopes){
+        return FtbTwitchServiceInitializer.generateTwitchLoginUrl(additionalScopes);
+    }
+
 }

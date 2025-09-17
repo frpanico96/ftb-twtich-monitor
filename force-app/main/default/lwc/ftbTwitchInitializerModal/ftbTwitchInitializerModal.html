@@ -1,0 +1,9 @@
+<template>
+    <lightning-modal-header label="Twitch Authorization"></lightning-modal-header>
+    <lightning-modal-body>
+      <iframe src={twitchUrl}></iframe>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+      <lightning-button disabled={closeBtnDisabled} label="Close" onclick={handleClose}></lightning-button>
+    </lightning-modal-footer>
+</template>

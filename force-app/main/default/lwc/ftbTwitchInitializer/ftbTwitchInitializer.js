@@ -1,15 +1,30 @@
-import { LightningElement, track} from 'lwc';
+import { LightningElement, track, wire} from 'lwc';
+import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
 import Toast from 'lightning/toast';
 import connectApp from '@salesforce/apex/FtbTwitchControllerInitializer.connectApp';
 import getTwitchUser from '@salesforce/apex/FtbTwitchControllerInitializer.getTwitchUser';
+import getTwitchLoginUrl from '@salesforce/apex/FtbTwitchControllerInitializer.getTwitchLoginUrl';
 
-export default class FtbTwitchInitializer extends LightningElement {
+export default class FtbTwitchInitializer extends NavigationMixin(LightningElement) {
 
   @track isLoading = false;
   @track loadingText = '';
   @track twUsername = '';
 
   async connectedCallback(){
+  }
+
+  @wire(CurrentPageReference)
+  getStateParams(currentPageReference){
+    console.log('@@@Reading reference')
+    if(currentPageReference){
+      console.log(currentPageReference.state.c__code);
+      const code = currentPageReference.state.c__code;
+      if(code){
+        this.loadingText = 'Finalizing Authentication...';
+        this.isLoading = true;
+      }
+    }
   }
 
   async initializeConnection(e) {
@@ -31,6 +46,13 @@ export default class FtbTwitchInitializer extends LightningElement {
         return;
       }
       this.loadingText = 'Starting Twitch Authorization...';
+      const loginUrl = await getTwitchLoginUrl({});
+      if(!loginUrl){
+        await sendErorrToast();
+        this.isLoading = false;
+        return;
+      }
+      window.open(loginUrl, '_self');
     }catch(e){
       await sendErorrToast();
       this.isLoading = false;
