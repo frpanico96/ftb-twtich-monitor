@@ -17,4 +17,10 @@ public with sharing class FtbTwitchControllerInitializer {
         return FtbTwitchServiceInitializer.generateTwitchLoginUrl(additionalScopes);
     }
 
+    @AuraEnabled
+    public static string connectUser(String code){
+        FtbTwitchInvokeFacade client = new FtbTwitchInvokeFacade('FtbTwitchAuthUser');
+        return client.operate(code);
+    }
+
 }

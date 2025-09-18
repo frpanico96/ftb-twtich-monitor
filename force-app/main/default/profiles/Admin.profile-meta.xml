@@ -22,7 +22,15 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FtbTwitchAuthUser</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>FtbTwitchBaseClass</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FtbTwitchConstants</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -63,6 +71,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>FtbTwitchTelemetryService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FtbTwitchUserUtility</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -107,6 +119,11 @@
         <editable>false</editable>
         <field>TwitchApp__c.Default__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TwitchApp__c.TokenExpiration__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -175,6 +192,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>TwitchSession__c.SessionId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>TwitchUser__c.AccessToken__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -236,6 +258,9 @@
         <layout>TwitchLog__c-Twitch Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>TwitchSession__c-Twitch Session Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>TwitchUser__c-Twitch User Layout</layout>
     </layoutAssignments>
     <objectPermissions>
@@ -254,6 +279,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>TwitchLog__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>TwitchSession__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

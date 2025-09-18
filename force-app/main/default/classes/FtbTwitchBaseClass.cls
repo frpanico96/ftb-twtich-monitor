@@ -15,4 +15,20 @@ public abstract with sharing class FtbTwitchBaseClass {
         return String.valueOf(Crypto.encryptWithManagedIV(algo, key, data));
     }
 
+    protected TwitchSession__c createTwitchSession(String sessionId){
+        return new TwitchSession__c(
+            Name=sessionId,
+            SessionId__c=sessionId);
+    }
+
+    protected String getTwitchSessionId(){
+        List<TwitchSession__c> sessions = FtbTwitchDbOps.getSobject([SELECT SessionId__c FROM TwitchSession__c WHERE CreatedById = :UserInfo.getUserId() ORDER BY CreatedDate DESC]);
+
+        if(sessions.isEmpty() || (!sessions.isEmpty() && String.isBlank(sessions[0].SessionId__c))){
+            throw new FtbTwitchException('No session found', String.valueOf(FtbTwitchEnums.FtbTwitchErrors.AUTH_ERROR));
+        }
+
+        return sessions[0].SessionId__c;
+    }
+
 }

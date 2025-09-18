@@ -1,20 +1,10 @@
-public with sharing class FtbTwitchGetUser implements FtbITwitchInvokeStrategy {
+public with sharing class FtbTwitchGetUser extends FtbTwitchBaseClass implements FtbITwitchInvokeStrategy{
 
-    private Map<String, String> broadcasterTypeMap = new Map<String, String>{
-            'partner' => 'Partner',
-            'affiliate' => 'Affiliate',
-            '' => ''
-        };
 
-    private Map<String, String> userType = new Map<String, String>{
-        'admin' => 'Admin',
-        'global_mod' => 'Global Mod',
-        'staff' => 'Staff'
-    };
 
-    public Boolean doExecuteCallout(String keyParam){
+    public FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto doExecuteCallout(String keyParam){
         List<TwitchUser__c> existingUsers =(List<TwitchUser__c>)FtbTwitchDbOps.getSobject([SELECT Id FROM TwitchUser__c WHERE Name = :keyParam]);
-        return existingUsers.isEmpty();
+        return new FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto(existingUsers.isEmpty());
     }
 
     public HttpRequest setAdditionalHeaders(HttpRequest req){
@@ -33,6 +23,7 @@ public with sharing class FtbTwitchGetUser implements FtbITwitchInvokeStrategy {
 
     public FtbTwitchMonitorDto.FacadeResponse handleResponse(HttpResponse res){
 
+        FtbTwitchUserUtility userUtilityClass = new FtbTwitchUserUtility();
         FtbTwitchMonitorDto.FacadeResponse result = new FtbTwitchMonitorDto.FacadeResponse();
 
         if(res.getStatusCode() != 200){
@@ -47,19 +38,12 @@ public with sharing class FtbTwitchGetUser implements FtbITwitchInvokeStrategy {
 
         FtbTwitchMonitorDto.TwitchUserResponseData userResData = userRes.data[0];
 
-        TwitchUser__c twitchUser = new TwitchUser__c(
-            Name=userResData.login,
-            TwitchId__c=userResData.id,
-            DisplayName__c=userResData.display_name,
-            LogoUrl__c=userResData.profile_image_url,
-            OfflineLogoUrl__c=userResData.offline_image_url,
-            Description__c=userResData.description,
-            ViewCount__c=userResData.view_count,
-            BroadcasterType__c=this.broadcasterTypeMap.get(userResData.broadcaster_type),
-            UserType__c=this.userType.get(userResData.type)
-        );
+        TwitchUser__c twitchUser = userUtilityClass.createTwitchUser(userResData);
+
+        TwitchSession__c twitchSession = this.createTwitchSession(userResData.id);
 
         result.sobjToUpsert.add(twitchUser);
+        result.sobjToUpsert.add(twitchSession);
         result.operationOutcome = String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS);
         return result;
 

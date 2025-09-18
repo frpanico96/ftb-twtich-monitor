@@ -6,6 +6,14 @@ public with sharing class FtbTwitchMonitorDto {
         public String token_type;
     }
 
+    public class TwitchAuthUserResponse {
+        public String access_token;
+        public Integer expires_in;
+        public String refresh_token;
+        public List<String> scope;
+        public String token_type;
+    }
+
     public class TwitchGetUserResponse{
         public List<TwitchUserResponseData> data;
     }
@@ -32,6 +40,22 @@ public with sharing class FtbTwitchMonitorDto {
             this.sobjToUpsert = new List<SObject>();    
         }
 
+    }
+
+    public class StrategyDoExecuteCalloutDto{
+
+        public Boolean executeCallout;
+        public String outcome;
+
+        public StrategyDoExecuteCalloutDto(Boolean executeCallout){
+            this.executeCallout = executeCallout;
+            this.outcome = String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS);
+        }
+    }
+
+    public class ClientResponse {
+        public Boolean isError;
+        public String message; 
     }
 
 }

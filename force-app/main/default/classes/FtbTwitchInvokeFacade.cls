@@ -26,9 +26,10 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
 
         TwitchLog__c log = new TwitchLog__c();
 
+        FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto executeCallout = this.strategy.doExecuteCallout(params);
 
-        if(!this.strategy.doExecuteCallout(params)){
-            return String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS);
+        if(!executeCallout.executeCallout){
+            return executeCallout.outcome;
         }
 
         try{ 

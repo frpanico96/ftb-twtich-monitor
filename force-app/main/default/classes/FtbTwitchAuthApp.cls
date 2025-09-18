@@ -7,10 +7,10 @@ public with sharing class FtbTwitchAuthApp implements FtbITwitchInvokeStrategy{
         return req;
     }
 
-    public Boolean doExecuteCallout(String keyParam){
+    public FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto doExecuteCallout(String keyParam){
         List<TwitchApp__c> appCredentials = FtbTwitchUtility.getTwitchApp();
-
-        return String.isBlank(appCredentials[0]?.AccessToken__c);
+        Boolean executeCalloutCondition = String.isBlank(appCredentials[0]?.AccessToken__c) || (System.now().getTime() > appCredentials[0].TokenExpiration__c);
+        return new FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto(executeCalloutCondition);
     }
 
     public HttpRequest setParamsOrBody(HttpRequest req, String params){
@@ -35,8 +35,11 @@ public with sharing class FtbTwitchAuthApp implements FtbITwitchInvokeStrategy{
 
         FtbTwitchMonitorDto.TwitchAuthAppResponse authResponse = (FtbTwitchMonitorDto.TwitchAuthAppResponse)JSON.deserialize(res.getBody(), FtbTwitchMonitorDto.TwitchAuthAppResponse.class);
 
+
         response.operationOutcome = String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS);
-        response.sobjToUpsert.add(new TwitchApp__c(Id = this.appId, AccessToken__c = authResponse.access_token));
+        response.sobjToUpsert.add(new TwitchApp__c(Id = this.appId, 
+            AccessToken__c = authResponse.access_token, 
+            TokenExpiration__c=((System.now()).getTime() + authResponse.expires_in)));
         
         return response;
     }

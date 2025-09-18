@@ -4,6 +4,7 @@ import Toast from 'lightning/toast';
 import connectApp from '@salesforce/apex/FtbTwitchControllerInitializer.connectApp';
 import getTwitchUser from '@salesforce/apex/FtbTwitchControllerInitializer.getTwitchUser';
 import getTwitchLoginUrl from '@salesforce/apex/FtbTwitchControllerInitializer.getTwitchLoginUrl';
+import connectUser from '@salesforce/apex/FtbTwitchControllerInitializer.connectUser';
 
 export default class FtbTwitchInitializer extends NavigationMixin(LightningElement) {
 
@@ -15,7 +16,7 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
   }
 
   @wire(CurrentPageReference)
-  getStateParams(currentPageReference){
+  async getStateParams(currentPageReference){
     console.log('@@@Reading reference')
     if(currentPageReference){
       console.log(currentPageReference.state.c__code);
@@ -23,6 +24,22 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
       if(code){
         this.loadingText = 'Finalizing Authentication...';
         this.isLoading = true;
+        const twitchUserId = await connectUser({code});
+        if(!twitchUserId || twitchUserId === 'ERROR'){
+          await sendErorrToast();
+          this.isLoading = false;
+          return;
+        }
+        this.isLoading = false;
+        console.log(twitchUserId);
+        const pageRef = {
+          type: 'standard__recordPage',
+          attributes: {
+            recordId: twitchUserId,
+            actionName: 'view',
+          }
+        }
+        this[NavigationMixin.Navigate](pageRef);
       }
     }
   }
