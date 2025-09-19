@@ -192,6 +192,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>TwitchScope__c.Active__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>TwitchScope__c.Description__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>TwitchScope__c.ScopeApiName__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>TwitchScope__c.Suggested__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>TwitchSession__c.SessionId__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -258,7 +278,13 @@
         <layout>TwitchLog__c-Twitch Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>TwitchScope__c-Twitch Scope Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>TwitchSession__c-Twitch Session Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>TwitchUserScope__c-Twitch User Scope Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>TwitchUser__c-Twitch User Layout</layout>
