@@ -58,4 +58,34 @@ public with sharing class FtbTwitchMonitorDto {
         public String message; 
     }
 
+    public class TwitchScopePickerDto {
+        public Map<String, TwitchScope> organizedScopes;
+        public List<String> suggestedScopes;
+        public List<TwitchScopeBoxListDto> boxListScopes;
+    }
+
+    public class TwitchScope {
+        public String label;
+        public String description;
+        public Boolean isSuggested;
+
+        public TwitchScope(String label, String description, Boolean isSuggested){
+            this.label = label;
+            this.description = description;
+            this.isSuggested = isSuggested;
+        }
+
+    }
+
+    public class TwitchScopeBoxListDto {
+
+        public String label;
+        public String value;
+
+        public TwitchScopeBoxListDto(String label, String value){
+            this.label = label;
+            this.value = value;
+        }
+    }
+
 }

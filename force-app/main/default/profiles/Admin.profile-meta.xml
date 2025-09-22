@@ -66,6 +66,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>FtbTwitchScopePickerController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>FtbTwitchScopePickerService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>FtbTwitchServiceInitializer</apexClass>
         <enabled>true</enabled>
     </classAccesses>
