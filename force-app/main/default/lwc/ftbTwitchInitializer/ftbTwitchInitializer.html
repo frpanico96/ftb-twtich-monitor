@@ -1,0 +1,16 @@
+<template>
+  <template if:true={isLoading}>
+    <c-ftb-utility-spinner is-loading="true" loading-text={loadingText}></c-ftb-utility-spinner>
+  </template>
+  <template if:false={isLoading}>
+    <lightning-card show-footer="true" icon-name="custom:custom21" title="Let's Get Started">
+      <div slot="footer">
+        <lightning-button label="Connect" onclick={initializeConnection}></lightning-button>
+      </div>
+      <div class="slds-p-around_small">
+        <span class="ftb-get-started-text">Input your Twitch username. It won't be used for authorization stuff, but to enjoy the full App experience use your current Twitch username</span>
+        <lightning-input class="slds-p-around_small" type="text" label="Your Twitch Username" value={twUsername} onchange={handleValueChange}></lightning-input>
+      </div>
+    </lightning-card>
+  </template>
+</template>

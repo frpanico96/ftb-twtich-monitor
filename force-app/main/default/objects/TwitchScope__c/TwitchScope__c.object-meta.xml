@@ -143,7 +143,7 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>Object representing a Twitch broadcaster</description>
+    <description>List all the twitch scopes grant</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
@@ -154,13 +154,13 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>Twitch User</label>
+    <label>Twitch Scope</label>
     <nameField>
-        <label>Twitch User Name</label>
+        <label>Twitch Scope Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Twitch Users</pluralLabel>
+    <pluralLabel>Twitch Scopes</pluralLabel>
     <searchLayouts></searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Read</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

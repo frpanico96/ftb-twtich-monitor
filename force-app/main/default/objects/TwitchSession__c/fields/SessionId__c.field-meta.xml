@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>TwitchId__c</fullName>
+    <fullName>SessionId__c</fullName>
     <caseSensitive>false</caseSensitive>
-    <description>Id of the Twitch Broadcaster</description>
+    <description>Represent the key value to retrieve the session</description>
     <externalId>true</externalId>
-    <label>TwitchId</label>
-    <length>40</length>
+    <label>Session Id</label>
+    <length>255</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
