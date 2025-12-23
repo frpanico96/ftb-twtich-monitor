@@ -7,10 +7,10 @@ public with sharing class FtbTwitchServiceInitializer extends FtbTwitchBaseClass
             if(String.isNotBlank(additionalScopes)){
                 defaultScope += ' ' + additionalScopes;
             }
-            String responseType = 'code';
+            String responseType = FtbTwitchConstants.TWITCH_LOGIN_CODE;
             List<TwitchApp__c> appCredentials = FtbTwitchUtility.getTwitchApp();
             String clientId = appCredentials[0].ClientId__c;
-            String baseEndpoint = 'https://id.twitch.tv/oauth2/authorize';
+            String baseEndpoint = FtbTwitchConstants.TWITCH_LOGIN_BASE_URL;
             String fullUrl = baseEndpoint + '?client_id=' + clientId + '&redirect_uri=' + FtbTwitchConstants.REDIRECT_URI + '&response_type=' + responseType + '&scope=' + EncodingUtil.urlEncode(defaultScope, 'UTF-8');
             return fullUrl;
         } catch(Exception e){

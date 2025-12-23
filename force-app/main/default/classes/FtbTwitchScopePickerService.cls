@@ -24,7 +24,15 @@ public with sharing class FtbTwitchScopePickerService {
     }
 
     private static List<TwitchScope__c> getAllScopes(){
-        return FtbTwitchDbOps.getSobject([SELECT Description__c, Name, Suggested__c, ScopeApiName__c FROM TwitchScope__c WHERE Active__c = TRUE]);
+
+        return SOQL.of(TwitchScope__c.SObjectType)
+            .with(TwitchScope__c.Description__c, TwitchScope__c.Name,
+                  TwitchScope__c.Suggested__c,
+                  TwitchScope__c.ScopeApiName__c)
+            .whereAre(SOQL.Filter.with(TwitchScope__c.Active__c).isTrue())
+            .mockId('FtbTwitchScopePickerService.getAllScopes')
+            .toList();
+ 
     }
 
 
