@@ -1,7 +1,9 @@
-import { LightningElement, track } from 'lwc';
+import { api, track } from 'lwc';
 import getTwitchScopeForBoxList from '@salesforce/apex/FtbTwitchScopePickerController.getTwitchScopeForBoxList';
 
-export default class FtbTwitchScopePicker extends LightningElement {
+import LightningModal from 'lightning/modal';
+
+export default class FtbTwitchScopePicker extends LightningModal {
 
     @track isLoading = true;
     @track selectedScopes = [];
@@ -12,11 +14,13 @@ export default class FtbTwitchScopePicker extends LightningElement {
     @track scopes = [];
     @track scopeMap = {};
     @track minScopes = 1;
-    
+
+    @api header = 'Fallback Header';
+
     async connectedCallback(){
         try{
-            const scopesString = await getTwitchScopeForBoxList()
-            const scopes = JSON.parse(scopesString);
+            const scopes = await getTwitchScopeForBoxList();
+            console.log(scopes);
             this.scopeMap = {...scopes['organizedScopes']};
             const suggestedScopes = scopes['suggestedScopes'];
             const options = scopes['boxListScopes'];
@@ -54,6 +58,10 @@ export default class FtbTwitchScopePicker extends LightningElement {
         label: currentScope['label'],
         description: currentScope['description'],
       }
+    }
+
+    handleConfirm(){
+      this.close({scopes: this.selectedScopes});
     }
 
 }

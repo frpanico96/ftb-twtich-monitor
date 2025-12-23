@@ -58,15 +58,22 @@ public with sharing class FtbTwitchMonitorDto {
         public String message; 
     }
 
+
     public class TwitchScopePickerDto {
+        @AuraEnabled
         public Map<String, TwitchScope> organizedScopes;
+        @AuraEnabled
         public List<String> suggestedScopes;
+        @AuraEnabled
         public List<TwitchScopeBoxListDto> boxListScopes;
     }
 
     public class TwitchScope {
+        @AuraEnabled
         public String label;
+        @AuraEnabled
         public String description;
+        @AuraEnabled
         public Boolean isSuggested;
 
         public TwitchScope(String label, String description, Boolean isSuggested){
@@ -78,8 +85,9 @@ public with sharing class FtbTwitchMonitorDto {
     }
 
     public class TwitchScopeBoxListDto {
-
+        @AuraEnabled
         public String label;
+        @AuraEnabled
         public String value;
 
         public TwitchScopeBoxListDto(String label, String value){
