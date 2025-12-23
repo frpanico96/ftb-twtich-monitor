@@ -22,8 +22,15 @@ public abstract with sharing class FtbTwitchBaseClass {
     }
 
     protected String getTwitchSessionId(){
-        List<TwitchSession__c> sessions = FtbTwitchDbOps.getSobject([SELECT SessionId__c FROM TwitchSession__c WHERE CreatedById = :UserInfo.getUserId() ORDER BY CreatedDate DESC]);
-
+        List<TwitchSession__c> sessions = SOQL.of(TwitchSession__c.SObjectType)
+            .with(TwitchSession__c.SessionId__c)
+            .whereAre(SOQL.Filter.with(TwitchSession__c.CreatedById).equal(UserInfo.getUserId()))
+            .orderBy(TwitchSession__c.CreatedDate)
+            .sortDesc()
+            .setLimit(1)
+            .mockId('FtbTwitchUserUtility.getTwitchSessionId')
+            .toList();
+        
         if(sessions.isEmpty() || (!sessions.isEmpty() && String.isBlank(sessions[0].SessionId__c))){
             throw new FtbTwitchException('No session found', String.valueOf(FtbTwitchEnums.FtbTwitchErrors.AUTH_ERROR));
         }

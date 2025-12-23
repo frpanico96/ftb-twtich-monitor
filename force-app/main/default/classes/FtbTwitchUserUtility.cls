@@ -27,21 +27,6 @@ public with sharing class FtbTwitchUserUtility extends FtbTwitchBaseClass{
         );
     }
 
-    public string getTwitchUsername(){
-        String sessionId = this.getTwitchSessionId();
-
-        TwitchUser__c twitchUser = getTwitchUserByTwitchId(sessionId);
-
-        return twitchUser.DisplayName__c;
-    }
-
-    public string getTwitchUserId(){
-        String sessionId = this.getTwitchSessionId();
-
-        TwitchUser__c twitchUser = getTwitchUserByTwitchId(sessionId);
-
-        return twitchUser.TwitchId__c;
-    }
 
     public TwitchUser__c getTwitchUserBySessionId(){
         String sessionId = this.getTwitchSessionId();
@@ -52,20 +37,23 @@ public with sharing class FtbTwitchUserUtility extends FtbTwitchBaseClass{
 
     public TwitchUser__c getTwitchUserByTwitchId(String twitchId){
 
-        List<TwitchUser__c> twitchUsers = FtbTwitchDbOps.getSobject([SELECT Id, 
-            Name, 
-            DisplayName__c, 
-            TwitchId__c, 
-            LogoUrl__c, 
-            Description__c, 
-            AccessToken__c, 
-            RefreshToken__c, 
-            OfflineLogoUrl__c, 
-            ViewCount__c, 
-            UserType__c, 
-            BroadcasterType__c 
-            FROM TwitchUser__c  
-            WHERE TwitchId__c = :twitchId]);
+        List<TwitchUser__c> twitchUsers = 
+            SOQL.of(TwitchUser__c.SObjectType)
+            .with(new List<SobjectField>{TwitchUser__c.Id, 
+                  TwitchUser__c.Name, 
+                  TwitchUser__c.DisplayName__c, 
+                  TwitchUser__c.TwitchId__c, 
+                  TwitchUser__c.LogoUrl__c, 
+                  TwitchUser__c.Description__c, 
+                  TwitchUser__c.AccessToken__c, 
+                  TwitchUser__c.RefreshToken__c, 
+                  TwitchUser__c.OfflineLogoUrl__c, 
+                  TwitchUser__c.ViewCount__c, 
+                  TwitchUser__c.UserType__c, 
+                  TwitchUser__c.BroadcasterType__c})
+            .whereAre(SOQL.Filter.with(TwitchUser__c.TwitchId__c).equal(twitchId))
+            .mockId('FtbTwitchUserUtility.getTwitchUserByTwitchId')
+            .toList();
         
         if(twitchUsers.isEmpty()){
             throw new FtbTwitchException('No user found for twitch id: ' + twitchId, 

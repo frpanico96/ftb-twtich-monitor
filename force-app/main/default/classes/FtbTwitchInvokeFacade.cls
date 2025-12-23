@@ -26,13 +26,13 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
 
         TwitchLog__c log = new TwitchLog__c();
 
-        FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto executeCallout = this.strategy.doExecuteCallout(params);
-
-        if(!executeCallout.executeCallout){
-            return executeCallout.outcome;
-        }
-
+        
         try{ 
+            FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto executeCallout = this.strategy.doExecuteCallout(params);
+    
+            if(!executeCallout.executeCallout){
+                return executeCallout.outcome;
+            }
             Http h = new Http();
             HttpRequest req = new HttpRequest();
             HttpResponse res = new HttpResponse();
@@ -56,8 +56,11 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
 
             outcome.sobjToUpsert.add(log);
 
-            FtbTwitchDbOps.upsertSobject(outcome.sobjToUpsert);
-
+            new DML()
+                .toUpsert(outcome.sobjToUpsert)
+                .identifier('FtbTwitchInvokeFacade.operate')
+                .commitWork();
+                
             return outcome.operationOutcome;
         } catch(Exception e){
             return String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.ERROR);

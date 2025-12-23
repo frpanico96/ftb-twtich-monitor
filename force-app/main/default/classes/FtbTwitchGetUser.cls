@@ -3,7 +3,13 @@ public with sharing class FtbTwitchGetUser extends FtbTwitchBaseClass implements
 
 
     public FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto doExecuteCallout(String keyParam){
-        List<TwitchUser__c> existingUsers =(List<TwitchUser__c>)FtbTwitchDbOps.getSobject([SELECT Id FROM TwitchUser__c WHERE Name = :keyParam]);
+
+        List<TwitchUser__c> existingUsers = SOQL.of(TwitchUser__c.SObjectType)
+            .with(TwitchUser__c.Id)
+            .whereAre(SOQL.Filter.with(TwitchUser__c.Name).equal((keyParam)))
+            .mockId('FtbTwitchGetUser.doExecuteCallout')
+            .toList();
+        
         return new FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto(existingUsers.isEmpty());
     }
 
