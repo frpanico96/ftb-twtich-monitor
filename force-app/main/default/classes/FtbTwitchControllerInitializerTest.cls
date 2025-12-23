@@ -33,6 +33,18 @@ private class FtbTwitchControllerInitializerTest {
             Default__c = true
             );
     }
+
+    @isTest
+    static void unimplementedStrategyTest(){
+        Boolean testPassed = false;
+        try{
+            FtbTwitchInvokeFacade facade = new FtbTwitchInvokeFacade('NonExistentStrategy');
+        } catch(Exception e){
+            testPassed = true;
+        }
+
+        Assert.isTrue(testPassed, 'Unimplemented strategy case not covered');
+    }
     
     @isTest
     static void connectAppOkTest(){
@@ -163,6 +175,22 @@ private class FtbTwitchControllerInitializerTest {
 
     }
 
+
+    @isTest
+    static void getTwitchUserNoCalloutTest(){
+        SOQL.mock('FtbTwitchGetUser.doExecuteCallout').thenReturn(new List<TwitchUser__c>{
+            new TwitchUser__c(
+                Name = '12345',
+                TwitchId__c='12345'
+            )
+        });
+
+        Test.startTest();
+            String outcome = FtbTwitchControllerInitializer.getTwitchUser('12345');
+        Test.stopTest();
+
+        Assert.areEqual(outcome, String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS), 'Operation did not succeed');
+    }
 
     @isTest
     static void getTwitchLoginUrlOkTest(){
