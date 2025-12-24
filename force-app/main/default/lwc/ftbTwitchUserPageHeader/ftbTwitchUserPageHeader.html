@@ -1,0 +1,24 @@
+<template>
+    <c-ftb-utility-spinner is-loading={isLoading} loading-text="Loading Twitch User Information..."></c-ftb-utility-spinner>
+    <template if:false={isLoading}>
+        <lightning-layout class="ftb-twitch-user-page-header slds-p-around_small" horizontal-align="stretch">
+            <lightning-layout-item size="3">
+                <lightning-avatar src={streamer.avatar} size="large" alternative-text={streamer.displayName} variant="circle"></lightning-avatar>
+                <lightning-formatted-text value={streamer.displayName} class="ftb-twitch-user-display-name slds-m-left_small"></lightning-formatted-text>
+            </lightning-layout-item>
+            <lightning-layout-item size="7">
+                <p><lightning-formatted-rich-text value={streamer.description}></lightning-formatted-rich-text></p>
+            </lightning-layout-item>
+            <lightning-layout-item size="2">
+                <div>
+                    <lightning-icon icon-name="utility:preview" alternative-text="view count" size="small"></lightning-icon>
+                    <lightning-formatted-text value={streamer.viewCount} class="slds-m-left_small"></lightning-formatted-text>
+                </div>
+                <div>
+                    <lightning-icon icon-name="utility:meet_focus_content" alternative-text="broadcaster type" size="small"></lightning-icon>
+                    <lightning-formatted-text value={streamer.broadcasterType}></lightning-formatted-text>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+</template>
