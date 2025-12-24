@@ -17,6 +17,7 @@ public with sharing class FtbTwitchUtility extends FtbTwitchBaseClass{
             .add(SOQL.Filter.with(TwitchApp__c.Active__c).isTrue())
             .add(SOQL.Filter.with(TwitchApp__c.Default__c).isTrue()))
         .mockId('FtbTwitchUtility.getTwitchApp')
+        .systemMode()
         .toList();
 
         if(res.isEmpty()){

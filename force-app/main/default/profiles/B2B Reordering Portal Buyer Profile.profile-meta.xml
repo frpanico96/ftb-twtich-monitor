@@ -38,10 +38,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>FtbTwitchDbOps</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>FtbTwitchEnums</apexClass>
         <enabled>false</enabled>
     </classAccesses>

@@ -1,20 +1,28 @@
 <template>
+    <lightning-modal-header label={header}></lightning-modal-header>
+    <lightning-modal-body>
     <div lwc:if={isLoading}>
       <c-ftb-utility-spinner is-loading={isLoading} loading-text="Loading Scopes..."></c-ftb-utility-spinner>
     </div>
-    <div lwc:else>
+    <div class="ftb-scope-container" lwc:else>
       <lightning-layout>
         <lightning-layout-item>
           <p>Select the desired functionalities you want to access. Some are already selected, we suggested them because we think are core functionalities to intereact with Twitch. Anyway you can modify, remove or add others to them freely.</p>
         </lightning-layout-item>
       </lightning-layout>
       <lightning-layout horizontal-align="spread">
-        <lightning-layout-item size="8">
+        <lightning-layout-item size="12">
           <lightning-dual-listbox disabled={disableBoxList} min={minScopes} name="twitchScopes" label="Select Twitch Scopes" source-label="Available Scopes" selected-label="Selected Scopes" options={scopes} value={selectedScopes} field-level-help="Check out description of selected Scope" onclick={handleClick} onchange={handleChange}></lightning-dual-listbox>
         </lightning-layout-item>
-        <lightning-layout-item size="4">
-          <lightning-input type="text" label={selectedScope.label} disabled value={selectedScope.description} class="slds-p-around_small"></lightning-input>
-        </lightning-layout-item>
+      </lightning-layout>
+      <lightning-layout>
+        <lightning-layout-item size="12">
+          <lightning-input type="text" label={selectedScope.label} disabled value={selectedScope.description}></lightning-input>
+        </lightning-layout-item>  
       </lightning-layout>
     </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+      <lightning-button label="Confirm" onclick={handleConfirm} variant="brand"></lightning-button>
+    </lightning-modal-footer>
 </template>

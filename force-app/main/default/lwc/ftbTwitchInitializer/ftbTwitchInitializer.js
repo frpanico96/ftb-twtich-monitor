@@ -6,6 +6,8 @@ import getTwitchUser from '@salesforce/apex/FtbTwitchControllerInitializer.getTw
 import getTwitchLoginUrl from '@salesforce/apex/FtbTwitchControllerInitializer.getTwitchLoginUrl';
 import connectUser from '@salesforce/apex/FtbTwitchControllerInitializer.connectUser';
 
+import FtbTwitchScopePicker from 'c/ftbTwitchScopePicker';
+
 export default class FtbTwitchInitializer extends NavigationMixin(LightningElement) {
 
   @track isLoading = false;
@@ -48,6 +50,21 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
     e.preventDefault();
     this.loadingText = 'Connecting to Twitch App...';
     this.isLoading = true;
+
+    const result = await FtbTwitchScopePicker.open({
+      size: 'large',
+      header: 'Select Twitch Permissions'
+    });
+    
+    if(!result?.scopes) {
+      console.log('@@@ No scopes selected, aborting process');
+      this.isLoading = false;
+      return;
+    }
+
+    const additionalScopes = (result?.scopes).join(' ');
+    console.log('@@@ Selected Scopes', additionalScopes);
+
     try{
       const appConnRes = await invokeAppAuthentication();
       if(appConnRes === 'ERROR'){
@@ -63,7 +80,7 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
         return;
       }
       this.loadingText = 'Starting Twitch Authorization...';
-      const loginUrl = await getTwitchLoginUrl({});
+      const loginUrl = await getTwitchLoginUrl({additionalScopes});
       if(!loginUrl){
         await sendErorrToast();
         this.isLoading = false;
