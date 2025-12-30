@@ -41,7 +41,6 @@
     <label>FTB Twitch Monitor (TEST)</label>
     <navType>Standard</navType>
     <tabs>standard-home</tabs>
-    <tabs>TwitchUser__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>FTB_Twitch_Monitor_TEST_UtilityBar</utilityBar>
 </CustomApplication>
