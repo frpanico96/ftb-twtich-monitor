@@ -51,6 +51,11 @@ public with sharing class FtbTwitchMonitorDto {
             this.executeCallout = executeCallout;
             this.outcome = String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS);
         }
+
+        public StrategyDoExecuteCalloutDto(Boolean executeCallout, String outcome){
+            this.executeCallout = executeCallout;
+            this.outcome = outcome;
+        }
     }
 
     public class ClientResponse {

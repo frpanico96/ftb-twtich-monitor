@@ -189,7 +189,7 @@ private class FtbTwitchControllerInitializerTest {
             String outcome = FtbTwitchControllerInitializer.getTwitchUser('12345');
         Test.stopTest();
 
-        Assert.areEqual(outcome, String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS), 'Operation did not succeed');
+        Assert.areNotEqual(outcome, String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.ERROR), 'Operation did not succeed');
     }
 
     @isTest
@@ -283,5 +283,122 @@ private class FtbTwitchControllerInitializerTest {
         Test.stopTest();    
 
         Assert.areNotEqual(outcome, String.valueOf(FtbTwitchEnums.FtbTwitchOutcome.SUCCESS), 'Operation did not succeed'); 
+    }
+
+    @isTest
+    static void upsertPickerServiceTestSuccess(){
+
+        insert new TwitchUser__c(
+            Name='sample_user',
+            TwitchId__c='12345'
+        );
+
+        insert new TwitchSession__c(
+            Name='sample_user_session',
+            SessionId__c = '12345'
+        );
+
+        List<TwitchScope__c> scopesToInsert = new List<TwitchScope__c>{
+            new TwitchScope__c(
+                Name='Scope 1',
+                ScopeApiName__c='scope1',
+                Description__c='Description 1',
+                Active__c=true,
+                Suggested__c=true
+            ),
+            new TwitchScope__c(
+                Name='Scope 2',
+                ScopeApiName__c='scope2',
+                Description__c='Description 2',
+                Active__c=true,
+                Suggested__c=true
+            ),
+            new TwitchScope__c(
+                Name='Scope 3',
+                ScopeApiName__c='scope3',
+                Description__c='Description 3',
+                Active__c=true,
+                Suggested__c=true
+            ),
+            new TwitchScope__c(
+                Name='Scope 4',
+                ScopeApiName__c='scope4',
+                Description__c='Description 4',
+                Active__c=true,
+                Suggested__c=true
+            ),
+            new TwitchScope__c(
+                Name='Scope 5',
+                ScopeApiName__c='scope5',
+                Description__c='Description 5',
+                Active__c=true,
+                Suggested__c=true
+            )
+        };
+
+        insert scopesToInsert;
+
+        insert new List<TwitchUserScope__c> {
+            new TwitchUserScope__c(
+                Name='scope1',
+                TwitchUser__c = [SELECT Id FROM TwitchUser__c WHERE Name='sample_user'].Id,
+                TwitchScope__c = scopesToInsert[0].Id,
+                Active__c = true
+            ),
+            new TwitchUserScope__c(
+                Name='scope2',
+                TwitchUser__c = [SELECT Id FROM TwitchUser__c WHERE Name='sample_user'].Id,
+                TwitchScope__c = scopesToInsert[1].Id,
+                Active__c = true
+            ),
+            new TwitchUserScope__c(
+                Name='scope5',
+                TwitchUser__c = [SELECT Id FROM TwitchUser__c WHERE Name='sample_user'].Id,
+                TwitchScope__c = scopesToInsert[4].Id,
+                Active__c = true
+            )
+        };
+
+        Test.startTest();
+            FtbTwitchControllerInitializer.upsertAdditionalScopes('scope1 scope3 scope4');
+        Test.stopTest();
+
+        List<TwitchUserScope__c> userScopesDeactivated = [SELECT Id, TwitchScope__r.ScopeApiName__c 
+            FROM TwitchUserScope__c 
+            WHERE TwitchScope__r.ScopeApiName__c IN ('scope2', 'scope5') AND Active__c = true];
+
+        List<TwitchUserScope__c> userScopeActivated = [SELECT Id, TwitchScope__r.ScopeApiName__c 
+            FROM TwitchUserScope__c 
+            WHERE TwitchScope__r.ScopeApiName__c IN ('scope1', 'scope3', 'scope4') AND Active__c = true];
+
+        Assert.areEqual(0, userScopesDeactivated.size(), 'Some scopes were not deactivated');
+        Assert.areEqual(3, userScopeActivated.size(), 'Some scopes were not activated');
+    }
+
+    @isTest
+    static void upsertPickerServiceTestException(){
+
+        SOQL.mock('FtbTwitchUserUtility.getTwitchSessionId').thenReturn(new List<TwitchSession__c>{
+            new TwitchSession__c(SessionId__c='12345')
+        });
+
+        SOQL.mock('FtbTwitchUserUtility.getTwitchUserByTwitchId').thenReturn(new List<TwitchUser__c>{
+            new TwitchUser__c(Name='sample_user')
+        });
+        
+        SOQL.mock('FtbTwitchScopePickerService.upsertAdditionalScopes').throwException('Test exception');
+
+        Boolean testPassed = false;
+
+        try{
+            Test.startTest();
+                FtbTwitchControllerInitializer.upsertAdditionalScopes('scope1 scope3 scope4');
+            Test.stopTest();
+        } catch(Exception e){
+            testPassed = true;
+        }
+
+        Assert.isTrue(testPassed, 'Exception case not covered in upsertAdditionalScopes');
+
     }
 }

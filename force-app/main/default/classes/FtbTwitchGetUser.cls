@@ -9,8 +9,8 @@ public with sharing class FtbTwitchGetUser extends FtbTwitchBaseClass implements
             .whereAre(SOQL.Filter.with(TwitchUser__c.Name).equal((keyParam)))
             .mockId('FtbTwitchGetUser.doExecuteCallout')
             .toList();
-        
-        return new FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto(existingUsers.isEmpty());
+
+        return new FtbTwitchMonitorDto.StrategyDoExecuteCalloutDto(existingUsers.isEmpty(), existingUsers.isEmpty() ? '' : existingUsers[0].Id);
     }
 
     public HttpRequest setAdditionalHeaders(HttpRequest req){
@@ -45,7 +45,7 @@ public with sharing class FtbTwitchGetUser extends FtbTwitchBaseClass implements
         FtbTwitchMonitorDto.TwitchUserResponseData userResData = userRes.data[0];
 
         TwitchUser__c twitchUser = userUtilityClass.createTwitchUser(userResData);
-
+        twitchUser.Status__c = 'Draft';
         TwitchSession__c twitchSession = this.createTwitchSession(userResData.id);
 
         result.sobjToUpsert.add(twitchUser);

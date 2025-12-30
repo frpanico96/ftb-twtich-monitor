@@ -18,6 +18,11 @@ public with sharing class FtbTwitchControllerInitializer {
     }
 
     @AuraEnabled
+    public static void upsertAdditionalScopes(String additionalScopes){
+        FtbTwitchScopePickerService.upsertAdditionalScopes(additionalScopes);
+    }
+
+    @AuraEnabled
     public static string connectUser(String code){
         FtbTwitchInvokeFacade client = new FtbTwitchInvokeFacade('FtbTwitchAuthUser');
         return client.operate(code);
