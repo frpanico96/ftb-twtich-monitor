@@ -6,4 +6,6 @@ public with sharing class FtbTwitchConstants {
 
     public static final String TWITCH_LOGIN_CODE = 'code';
 
+    public static final String DEFAULT_SCOPES = 'channel:manage:polls channel:read:polls channel:manage:raids';
+
 }

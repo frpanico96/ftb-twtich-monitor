@@ -4,6 +4,7 @@ import Toast from 'lightning/toast';
 import connectApp from '@salesforce/apex/FtbTwitchControllerInitializer.connectApp';
 import getTwitchUser from '@salesforce/apex/FtbTwitchControllerInitializer.getTwitchUser';
 import getTwitchLoginUrl from '@salesforce/apex/FtbTwitchControllerInitializer.getTwitchLoginUrl';
+import upsertAdditionalScopes from '@salesforce/apex/FtbTwitchControllerInitializer.upsertAdditionalScopes';
 import connectUser from '@salesforce/apex/FtbTwitchControllerInitializer.connectUser';
 
 import FtbTwitchScopePicker from 'c/ftbTwitchScopePicker';
@@ -84,6 +85,7 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
         this.isLoading = false;
         return;
       }
+      await upsertAdditionalScopes({additionalScopes});
       window.open(loginUrl, '_self');
     }catch(e){
       console.log(e);

@@ -149,6 +149,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>TwitchUserScope__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>TwitchUser__c.AccessToken__c</field>
         <readable>true</readable>
     </fieldPermissions>

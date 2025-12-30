@@ -3,7 +3,7 @@ public with sharing class FtbTwitchServiceInitializer extends FtbTwitchBaseClass
 
     public static String generateTwitchLoginUrl(String additionalScopes){
         try{
-            String defaultScope = 'channel:manage:polls channel:read:polls channel:manage:raids';
+            String defaultScope = FtbTwitchConstants.DEFAULT_SCOPES;
             if(String.isNotBlank(additionalScopes)){
                 defaultScope += ' ' + additionalScopes;
             }

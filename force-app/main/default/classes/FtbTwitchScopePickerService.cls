@@ -1,5 +1,7 @@
 public with sharing class FtbTwitchScopePickerService {
 
+    public static FtbTwitchUserUtility twitchUserUtility = new FtbTwitchUserUtility();
+
 
     public static FtbTwitchMonitorDto.TwitchScopePickerDto getOrganizedScopes(){
 
@@ -20,6 +22,66 @@ public with sharing class FtbTwitchScopePickerService {
 
         }
         return result;
+
+    }
+
+    public static void upsertAdditionalScopes(String additionalScopes){
+
+        List<String> scopes = (FtbTwitchConstants.DEFAULT_SCOPES + ' ' + additionalScopes).split(' ');
+        List<TwitchUserScope__c> scopesToUpsert = new List<TwitchUserScope__c>();
+
+
+        String twitchUserId = twitchUserUtility.getTwitchUserBySessionId().Id;
+
+        try{
+
+            Map<String, TwitchScope__c> scopeMap = (Map<String, TwitchScope__c>) SOQL.of(TwitchScope__c.SObjectType)
+                .with(TwitchScope__c.ScopeApiName__c)
+                .whereAre(SOQL.Filter.with(TwitchScope__c.ScopeApiName__c).isIn(scopes))
+                .mockId('FtbTwitchScopePickerService.upsertAdditionalScopes')
+                .toMap(TwitchScope__c.ScopeApiName__c);
+    
+            Map<String, TwitchUserScope__c> existingUserScopesMap = (Map<String, TwitchUserScope__c>) SOQL.of(TwitchUserScope__c.SObjectType)
+                .with(TwitchUserScope__c.Id)
+                .with('TwitchScope__r', TwitchScope__c.ScopeApiName__c)
+                .whereAre(SOQL.Filter.with(TwitchUserScope__c.TwitchUser__c).equal(twitchUserId))
+                .mockId('FtbTwitchScopePickerService.upsertAdditionalScopes.existingUserScopesMap')
+                .toMap('TwitchScope__r', TwitchScope__c.ScopeApiName__c);
+    
+            for(String scope : scopes){
+    
+                if(scopeMap.get(scope) == null){
+                    continue;
+                }
+    
+                if(existingUserScopesMap.get(scope) != null){
+                    existingUserScopesMap.remove(scope);
+                    continue;
+                }
+                TwitchUserScope__c userScope = new TwitchUserScope__c(
+                    TwitchUser__c = twitchUserId,
+                    TwitchScope__c = scopeMap.get(scope).Id,
+                    Active__c = true
+                );
+                scopesToUpsert.add(userScope);
+    
+            }
+    
+            /* Deactivate existing scopes that have not been selected */
+            for(TwitchUserScope__c existingScope : existingUserScopesMap.values()){
+                scopesToUpsert.add(new TwitchUserScope__c(
+                    Id = existingScope.Id,
+                    Active__c = false
+                ));
+            }
+    
+            new DML()
+                .toUpsert(scopesToUpsert)
+                .commitWork();
+
+        }catch(Exception e){
+            throw new FtbTwitchException('Error upserting additional scopes: ' + e.getMessage());
+        }
 
     }
 
