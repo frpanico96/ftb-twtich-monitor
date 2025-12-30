@@ -72,7 +72,7 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
     public override TwitchLog__c logRequest(String reqBody, TwitchLog__c log){
         return FtbTwitchTelemetryService.logCalloutRequest(
             this.strategySettings.Method__c,
-            this.strategySettings.Method__c,
+            this.strategySettings.Endpoint__c,
             reqBody,
             this.strategySettings.DeveloperName,
             log);
@@ -81,7 +81,7 @@ public with sharing class FtbTwitchInvokeFacade extends FtbTwitchBaseClass{
     public override TwitchLog__c logResponse(String resBody, Integer statusCode, TwitchLog__c log){
         return FtbTwitchTelemetryService.logCalloutResponse(
             this.strategySettings.Method__c,
-            this.strategySettings.Method__c,
+            this.strategySettings.Endpoint__c,
             resBody,
             this.strategySettings.DeveloperName,
             statusCode,

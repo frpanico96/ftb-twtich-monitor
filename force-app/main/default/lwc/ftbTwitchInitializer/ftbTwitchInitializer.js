@@ -34,14 +34,7 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
         }
         this.isLoading = false;
         console.log(twitchUserId);
-        const pageRef = {
-          type: 'standard__recordPage',
-          attributes: {
-            recordId: twitchUserId,
-            actionName: 'view',
-          }
-        }
-        this[NavigationMixin.Navigate](pageRef);
+        this.navigateToRecord(twitchUserId);
       }
     }
   }
@@ -51,22 +44,11 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
     this.loadingText = 'Connecting to Twitch App...';
     this.isLoading = true;
 
-    const result = await FtbTwitchScopePicker.open({
-      size: 'large',
-      header: 'Select Twitch Permissions'
-    });
     
-    if(!result?.scopes) {
-      console.log('@@@ No scopes selected, aborting process');
-      this.isLoading = false;
-      return;
-    }
-
-    const additionalScopes = (result?.scopes).join(' ');
-    console.log('@@@ Selected Scopes', additionalScopes);
-
+    
     try{
       const appConnRes = await invokeAppAuthentication();
+      console.log('@@@ App Connection Result', appConnRes);
       if(appConnRes === 'ERROR'){
         await sendErorrToast();
         this.isLoading = false;
@@ -74,11 +56,27 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
       }
       this.loadingText = 'Finding User...';
       const userRes = await invokeGetTwitchUser(this.twUsername);
+      console.log('@@@ UserRes', userRes);
       if(userRes === 'ERROR'){
         await sendErorrToast();
         this.isLoading = false;
         return;
       }
+      if(userRes !== 'SUCCESS'){
+        this.navigateToRecord(userRes);
+        return;
+      }
+      const result = await FtbTwitchScopePicker.open({
+        size: 'large',
+        header: 'Select Twitch Permissions'
+      });
+      if(!result?.scopes) {
+        console.log('@@@ No scopes selected, aborting process');
+        this.isLoading = false;
+        return;
+      }  
+      const additionalScopes = (result?.scopes).join(' ');
+      console.log('@@@ Selected Scopes', additionalScopes);
       this.loadingText = 'Starting Twitch Authorization...';
       const loginUrl = await getTwitchLoginUrl({additionalScopes});
       if(!loginUrl){
@@ -88,6 +86,9 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
       }
       window.open(loginUrl, '_self');
     }catch(e){
+      console.log(e);
+      console.log(e.message);
+      console.log(JSON.stringify(e));
       await sendErorrToast();
       this.isLoading = false;
     }
@@ -96,7 +97,18 @@ export default class FtbTwitchInitializer extends NavigationMixin(LightningEleme
   handleValueChange(e) {
     this.twUsername = e.target.value;
   }
-
+  
+  navigateToRecord(recordId) {
+    console.log('@@@ Navigating to record', recordId);
+    const pageRef = {
+        type: 'standard__recordPage',
+        attributes: {
+          recordId: recordId,
+          actionName: 'view',
+        }
+      }
+    this[NavigationMixin.Navigate](pageRef);
+  }
 }
   
   const invokeAppAuthentication = async () => {

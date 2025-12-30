@@ -35,7 +35,8 @@ public with sharing class FtbTwitchAuthUser implements FtbITwitchInvokeStrategy{
         FtbTwitchMonitorDto.TwitchAuthUserResponse authResponse = (FtbTwitchMonitorDto.TwitchAuthUserResponse)JSON.deserialize(res.getBody(), FtbTwitchMonitorDto.TwitchAuthUserResponse.class);
 
         TwitchUser__c twitchUser = new TwitchUser__c(
-            Id = this.twitchUser.Id, 
+            Id = this.twitchUser.Id,
+            Status__c = 'Connected',
             AccessToken__c = authResponse.access_token, 
             RefreshToken__c = authResponse.refresh_token);
         

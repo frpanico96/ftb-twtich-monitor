@@ -184,6 +184,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>TwitchUser__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>TwitchUser__c.TwitchId__c</field>
         <readable>true</readable>
     </fieldPermissions>
